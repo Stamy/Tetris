@@ -15,7 +15,7 @@ window.onload = function () {
       case 68: // D
         tetris.moveRight();
         break;
-      case 32: // Sapce
+      case 32: // Space
         tetris.moveDown();
         break;
       case 83: // S
@@ -123,7 +123,7 @@ window.onload = function () {
     var Grid = this.grid;
     var figure = this.figure.figure;
 
-    // Can we rotate figure ro right ?
+    // Can we rotate figure ?
     if (((figure.length + this.xOffset) <= Grid.columns) && ((figure[0].length + this.yOffset) <= Grid.rows)) {
       var newFigure = callback();
       if (Grid.isCollision(newFigure, this.yOffset, this.xOffset)) {
