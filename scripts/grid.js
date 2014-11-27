@@ -1,1 +1,134 @@
-"use strict";!function(r){function t(r,t){this.columns=r||20,this.rows=t||20,this.grid=[]}t.prototype.generate=function(){for(var r=0;r<this.rows;r++){this.grid[r]=[];for(var t=0;t<this.columns;t++)this.grid[r][t]=0}return this},t.prototype.get=function(){return JSON.parse(JSON.stringify(this.grid))},t.prototype.render=function(r){var r=r||this.grid,t="";r.forEach(function(r){t+="*",r.forEach(function(r){t+=0===r?" ":"@"}),t+="*\n"});for(var i=0;i<this.rows+2;i++)t+="*";document.getElementById("tetris").innerHTML=t},t.prototype.isCollision=function(r,t,i){for(var n=this.grid.deepClone(),o=0;o<r.length;o++)for(var e=0;e<r[o].length;e++){if(1===n[o+t][e+i]&&1===r[o][e])return!1;1!==n[o+t][e+i]&&(n[o+t][e+i]=r[o][e])}return this.render(n),n},t.prototype.addFigure=function(r,t,i){for(var n=0;n<r.length;n++)for(var o=0;o<r[n].length;o++)1!==this.grid[n+t][o+i]&&(this.grid[n+t][o+i]=r[n][o])},r.app=r.app||{},r.app.Grid=t}(window);
+/**
+ * Created by Sarunas Tamasauskas
+ */
+
+'use strict';
+
+(function (window) {
+  /**
+   * Class for creating grid
+   * X
+   * |
+   * |
+   * |
+   * |-------Y
+   *
+   * @param  [columns]
+   * @param  [rows]
+   * @constructor
+   */
+  function Grid(columns, rows) {
+    this.y = columns || 20;
+    this.x = rows || 20;
+    this.grid = [];
+  }
+
+  /**
+   * Generates the matrix
+   *
+   * @returns {Grid}
+   */
+  Grid.prototype.generate = function () {
+    for (var xAxis = 0; xAxis < this.x; xAxis++) {
+      this.grid[xAxis] = [];
+      for (var yAxis = 0; yAxis < this.y; yAxis++) {
+        this.grid[xAxis][yAxis] = 0;
+      }
+    }
+
+    return this;
+  };
+
+  /**
+   * Creates deep copy of grid array
+   *
+   * @returns {*}
+   */
+  Grid.prototype.get = function () {
+    return JSON.parse(JSON.stringify(this.grid));
+  };
+
+  /**
+   * Renders the grid
+   *
+   * @param [figureArr]
+   * @param [yOffset]
+   * @param [xOffset]
+   */
+  Grid.prototype.render = function (figureArr, yOffset, xOffset) {
+    var grid = this.grid;
+    var gridString = '';
+
+    // Check if the optional arguments are passed if so check if there
+    // are not collisions and then render the temporary generated grid
+    if( arguments.length = 3){
+      var tempGrid = this.isCollision(figureArr, yOffset, xOffset);
+      if(tempGrid){
+        grid = tempGrid;
+      } else {
+        return false;
+      }
+    }
+
+    grid.forEach(function (row) {
+      gridString += '*';
+      row.forEach(function (column) {
+        if (column === 0) {
+          gridString += ' ';
+        } else {
+          gridString += '@';
+        }
+      });
+      gridString += '*\n';
+    });
+
+    // Bottom border
+    for (var i = 0; i < this.x + 2; i++) {
+      gridString += '*';
+    }
+
+    // Send grid to html
+    document.getElementById('tetris').innerHTML = gridString;
+
+    return true;
+  };
+
+
+  /**
+   * Checks if there is any problems with the new figure and then redraws
+   *
+   * @returns {boolean}
+   */
+  Grid.prototype.isCollision = function (figureArr, yOffset, xOffset) {
+    var grid = this.grid.deepClone(); // create deep copy of a grid
+
+    for (var x = 0; x < figureArr.length; x++) {
+      for (var y = 0; y < figureArr[x].length; y++) {
+        if (grid[x + yOffset][y + xOffset] === 1 && figureArr[x][y] === 1) {
+          return false;
+        } else if (!(grid[x + yOffset][y + xOffset] === 1)) {
+          grid[x + yOffset][y + xOffset] = figureArr[x][y];
+        }
+      }
+    }
+
+    return grid;
+  };
+
+  /**
+   * Ads figure to grid
+   */
+  Grid.prototype.addFigure = function (figureArr, yOffset, xOffset) {
+    for (var x = 0; x < figureArr.length; x++) {
+      for (var y = 0; y < figureArr[x].length; y++) {
+        if (!(this.grid[x + yOffset][y + xOffset] === 1)) {
+          this.grid[x + yOffset][y + xOffset] = figureArr[x][y];
+        }
+      }
+    }
+  };
+
+  // Export to window
+  window.app = window.app || {};
+  window.app.Grid = Grid;
+})(window);
