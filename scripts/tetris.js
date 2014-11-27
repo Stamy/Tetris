@@ -28,7 +28,7 @@
     var figure = this.figure.figure;
 
     // Can I move figure down ?
-    if (this.yOffset < Grid.x - figure.length) {
+    if (this.yOffset < Grid.ySize - figure.length) {
       ++this.yOffset;
       if (!Grid.render(figure, this.yOffset, this.xOffset)) {
         --this.yOffset;
@@ -53,7 +53,6 @@
     this.grid.render(this.figure.figure, this.yOffset, this.xOffset);
   };
 
-
   /**
    * Move figure left
    */
@@ -71,6 +70,7 @@
     }
   };
 
+
   /**
    * Move figure Right
    */
@@ -79,7 +79,7 @@
     var figure = this.figure.figure;
 
     // Can figure move right ?
-    if (this.xOffset < (Grid.y - figure[0].length)) {
+    if (this.xOffset < (Grid.xSize - figure[0].length)) {
       ++this.xOffset;
       if (Grid.render(figure, this.yOffset, this.xOffset)) {
         this.moveDown();
@@ -97,7 +97,7 @@
     var figure = this.figure.figure;
 
     // Can we rotate figure ?
-    if (((figure.length + this.xOffset) <= Grid.y) && ((figure[0].length + this.yOffset) <= Grid.x)) {
+    if (((figure.length + this.xOffset) <= Grid.xSize) && ((figure[0].length + this.yOffset) <= Grid.ySize)) {
       var newFigure = callback();
       if (Grid.render(newFigure, this.yOffset, this.xOffset)) {
         this.figure.figure = newFigure;

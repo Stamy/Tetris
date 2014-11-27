@@ -7,32 +7,32 @@
 (function (window) {
   /**
    * Class for creating grid
-   * X
-   * |
-   * |
-   * |
-   * |-------Y
+   * Y
+   * |      |
+   * |      |
+   * |      |
+   * |-------X
    *
    * @param  [columns]
    * @param  [rows]
    * @constructor
    */
   function Grid(columns, rows) {
-    this.y = columns || 20;
-    this.x = rows || 20;
+    this.xSize = columns || 20;
+    this.ySize = rows || 20;
     this.grid = [];
   }
 
   /**
-   * Generates the matrix
+   * Generates the grid
    *
    * @returns {Grid}
    */
   Grid.prototype.generate = function () {
-    for (var xAxis = 0; xAxis < this.x; xAxis++) {
-      this.grid[xAxis] = [];
-      for (var yAxis = 0; yAxis < this.y; yAxis++) {
-        this.grid[xAxis][yAxis] = 0;
+    for (var y = 0; y < this.ySize; y++) {
+      this.grid[y] = [];
+      for (var x = 0; x < this.xSize; x++) {
+        this.grid[y][x] = 0;
       }
     }
 
@@ -51,9 +51,10 @@
   /**
    * Renders the grid
    *
-   * @param [figureArr]
-   * @param [yOffset]
-   * @param [xOffset]
+   * @param figureArr
+   * @param yOffset
+   * @param xOffset
+   * @returns {boolean}
    */
   Grid.prototype.render = function (figureArr, yOffset, xOffset) {
     var grid = this.grid;
@@ -83,7 +84,7 @@
     });
 
     // Bottom border
-    for (var i = 0; i < this.x + 2; i++) {
+    for (var i = 0; i < this.ySize + 2; i++) {
       gridString += '*';
     }
 
@@ -102,12 +103,12 @@
   Grid.prototype.isCollision = function (figureArr, yOffset, xOffset) {
     var grid = this.grid.deepClone(); // create deep copy of a grid
 
-    for (var x = 0; x < figureArr.length; x++) {
-      for (var y = 0; y < figureArr[x].length; y++) {
-        if (grid[x + yOffset][y + xOffset] === 1 && figureArr[x][y] === 1) {
+    for (var y = 0; y < figureArr.length; y++) {
+      for (var x = 0; x < figureArr[y].length; x++) {
+        if (grid[y + yOffset][x + xOffset] === 1 && figureArr[y][x] === 1) {
           return false;
-        } else if (!(grid[x + yOffset][y + xOffset] === 1)) {
-          grid[x + yOffset][y + xOffset] = figureArr[x][y];
+        } else if (!(grid[y + yOffset][x + xOffset] === 1)) {
+          grid[y + yOffset][x + xOffset] = figureArr[y][x];
         }
       }
     }
@@ -119,10 +120,10 @@
    * Ads figure to grid
    */
   Grid.prototype.addFigure = function (figureArr, yOffset, xOffset) {
-    for (var x = 0; x < figureArr.length; x++) {
-      for (var y = 0; y < figureArr[x].length; y++) {
-        if (!(this.grid[x + yOffset][y + xOffset] === 1)) {
-          this.grid[x + yOffset][y + xOffset] = figureArr[x][y];
+    for (var y = 0; y < figureArr.length; y++) {
+      for (var x = 0; x < figureArr[y].length; x++) {
+        if (!(this.grid[y + yOffset][x + xOffset] === 1)) {
+          this.grid[y + yOffset][x + xOffset] = figureArr[y][x];
         }
       }
     }

@@ -51,6 +51,8 @@
 
   /**
    * Rotates figure to left
+   *
+   * @returns {Array}
    */
   Figure.prototype.rotateLeft = function () {
     var figure = this.figure;
