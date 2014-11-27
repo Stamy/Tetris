@@ -12,9 +12,10 @@
         <!-- endbower -->
         <!-- endbuild -->
 
-        <!-- build:css styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
+      <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css">
+      <!-- build:css styles/main.css -->
+      <link rel="stylesheet" href="styles/main.css">
+      <!-- endbuild -->
 
     </head>
     <body>
@@ -23,7 +24,8 @@
         <![endif]-->
 
         <div class="hero-unit">
-          <pre id="tetris"></pre>
+          <h1 class="text-center">Tetris</h1>
+          <pre class="text-center" id="tetris"></pre>
         </div>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -41,8 +43,20 @@
         <!-- endbower -->
         <!-- endbuild -->
 
+
+
+
+        <!-- build:js scripts/figure.js -->
+        <script src="scripts/figure.js"></script>
+        <!-- endbuild -->
+        <!-- build:js scripts/grid.js -->
+        <script src="scripts/grid.js"></script>
+        <!-- endbuild -->
+        <!-- build:js scripts/tetris.js -->
+        <script src="scripts/tetris.js"></script>
+        <!-- endbuild -->
         <!-- build:js scripts/main.js -->
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
-</body>
+    </body>
 </html>

@@ -1,7 +1,9 @@
 {
   "name": "tetris",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "gulp-gh-pages": "^0.4.0"
+  },
   "private": true,
   "devDependencies": {
     "connect": "^2.14.4",
