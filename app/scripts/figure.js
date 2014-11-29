@@ -5,8 +5,13 @@
 'use strict';
 
 (function (window) {
-  //########################## FIGURES ############################
 
+  /**
+   * Figures class
+   *
+   * @param [figures]
+   * @constructor
+   */
   function Figure(figures) {
     this.figures = figures ||
     [

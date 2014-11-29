@@ -6,7 +6,11 @@
 
 window.onload = function () {
 
+
   var tetris = new app.Tetris();
+
+  setInterval(function(){tetris.moveDown();}, 500);
+
   document.addEventListener('keydown', function (event) {
     switch (event.keyCode) {
       case 65: // A

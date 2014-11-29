@@ -14,9 +14,9 @@
   function Tetris() {
     this.grid = new app.Grid().generate();
     this.figure = new app.Figure();
-    this.xOffset = 9;
     this.yOffset = 0;
 
+    this.xOffsetMiddle();
     this.grid.render(this.figure.figure, this.yOffset, this.xOffset);
   }
 
@@ -41,16 +41,22 @@
     }
   };
 
+  Tetris.prototype.xOffsetMiddle = function(){
+    this.xOffset = Math.floor(this.grid.xSize/2);
+  };
+
   /**
-   * Creates new figure
+   * Creates new figure and restarts game
    */
   Tetris.prototype.newFigure = function () {
     this.figure = new app.Figure();
     this.yOffset = 0;
-    this.xOffset = 9;
+    this.xOffsetMiddle();
 
-    // TODO game over ?
-    this.grid.render(this.figure.figure, this.yOffset, this.xOffset);
+    // Game over ?
+    if(!this.grid.render(this.figure.figure, this.yOffset, this.xOffset)){
+      this.grid = new app.Grid().generate();
+    };
   };
 
   /**
@@ -62,9 +68,7 @@
     // Can figure move to left ?
     if (this.xOffset > 0) {
       --this.xOffset;
-      if (Grid.render(this.figure.figure, this.yOffset, this.xOffset)) {
-        this.moveDown();
-      } else {
+      if (!Grid.render(this.figure.figure, this.yOffset, this.xOffset)) {
         ++this.xOffset;
       }
     }
@@ -81,9 +85,7 @@
     // Can figure move right ?
     if (this.xOffset < (Grid.xSize - figure[0].length)) {
       ++this.xOffset;
-      if (Grid.render(figure, this.yOffset, this.xOffset)) {
-        this.moveDown();
-      } else {
+      if (!Grid.render(figure, this.yOffset, this.xOffset)) {
         --this.xOffset;
       }
     }
@@ -101,7 +103,6 @@
       var newFigure = callback();
       if (Grid.render(newFigure, this.yOffset, this.xOffset)) {
         this.figure.figure = newFigure;
-        this.moveDown();
       }
     }
   };

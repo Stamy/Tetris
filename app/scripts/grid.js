@@ -13,13 +13,13 @@
    * |      |
    * |-------X
    *
-   * @param  [columns]
-   * @param  [rows]
+   * @param  [xSize]
+   * @param  [ySize]
    * @constructor
    */
-  function Grid(columns, rows) {
-    this.xSize = columns || 20;
-    this.ySize = rows || 20;
+  function Grid(xSize, ySize) {
+    this.xSize = xSize || 10;
+    this.ySize = ySize || 20;
     this.grid = [];
   }
 
@@ -71,25 +71,38 @@
       }
     }
 
+    // Rendering part
+    var canvas = document.getElementById("myCanvas");
+    var boxSize = 25;
+    canvas.width = this.xSize * boxSize;
+    canvas.height = this.ySize * boxSize;
+
+    var ctx = canvas.getContext("2d");
+    //ctx.fillStyle = "#FF0000";
+    ctx.strokeStyle = "#0000ff";
+    ctx.lineWidth = 1;
+    var cX = 0;
+    var cY = 0;
+
     grid.forEach(function (row) {
-      gridString += '*';
+      //gridString += '*';
       row.forEach(function (column) {
         if (column === 0) {
-          gridString += ' ';
+          // Empty box
+          ctx.fillStyle = "#FFFFFF";
+          ctx.strokeRect(cX, cY, boxSize, boxSize);
+          ctx.fillRect(cX, cY, boxSize, boxSize);
         } else {
-          gridString += '@';
+          // Filled box
+          ctx.fillStyle = "#FF0000";
+          ctx.strokeRect(cX, cY, boxSize, boxSize);
+          ctx.fillRect(cX, cY, boxSize, boxSize);
         }
+        cX += boxSize;
       });
-      gridString += '*\n';
+      cX = 0;
+      cY += boxSize;
     });
-
-    // Bottom border
-    for (var i = 0; i < this.ySize + 2; i++) {
-      gridString += '*';
-    }
-
-    // Send grid to html
-    document.getElementById('tetris').innerHTML = gridString;
 
     return true;
   };
@@ -124,6 +137,35 @@
       for (var x = 0; x < figureArr[y].length; x++) {
         if (!(this.grid[y + yOffset][x + xOffset] === 1)) {
           this.grid[y + yOffset][x + xOffset] = figureArr[y][x];
+        }
+      }
+    }
+
+    this.deleteLine(figureArr, yOffset);
+  };
+
+  /**
+   * Removes the full X line and inserts empty in the beginning
+   *
+   * @param figureArr
+   * @param yOffset
+   */
+  Grid.prototype.deleteLine = function(figureArr, yOffset) {
+
+    // Loop only where the new figure is added
+    for (var y = yOffset; y < (figureArr.length + yOffset); y++) {
+      for (var x = 0; x < this.xSize; x++) {
+        if(this.grid[y][x] === 0){
+          break;
+        } else if (x === this.xSize - 1) {
+          // Remove line
+          this.grid.splice(y,1);
+
+          // Add line to the first position
+          this.grid.unshift([]);
+          for (var x = 0; x < this.xSize; x++) {
+            this.grid[0][x] = 0;
+          }
         }
       }
     }
